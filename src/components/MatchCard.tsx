@@ -4,7 +4,10 @@ import type { Pick, Side } from '../types';
 
 function fmtDate(ko: string): string {
   try {
-    return new Date(ko).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    return new Date(ko).toLocaleString('es-ES', {
+      timeZone: 'Europe/Madrid',
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+    });
   } catch {
     return '';
   }

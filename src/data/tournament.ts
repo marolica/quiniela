@@ -34,7 +34,7 @@ const R16_RAW: [number, string, string, string, string][] = [
   [89, 'CAN', 'MAR', '2026-07-04T17:00:00Z', 'Houston'],
   [90, 'PAR', 'FRA', '2026-07-04T21:00:00Z', 'Filadelfia'],
   [91, 'BRA', 'NOR', '2026-07-05T20:00:00Z', 'Nueva York/NJ'],
-  [92, 'MEX', 'ENG', '2026-07-06T00:00:00Z', 'Ciudad de México'],
+  [92, 'MEX', 'ENG', '2026-07-05T23:00:00Z', 'Ciudad de México'],
   [93, 'POR', 'ESP', '2026-07-06T19:00:00Z', 'Arlington'],
   [94, 'USA', 'BEL', '2026-07-06T21:00:00Z', 'Seattle'],
   [95, 'ARG', 'EGY', '2026-07-07T16:00:00Z', 'Atlanta'],
