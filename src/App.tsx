@@ -55,6 +55,7 @@ function App() {
             myCode={q.myCode()}
             onCopyCode={q.copyMyCode}
             onDownload={q.downloadMyPicks}
+            onRestoreMyPicks={q.restoreMyPicks}
           />
         )}
         {q.tab === 'cuadro' && <Cuadro official={q.official} />}

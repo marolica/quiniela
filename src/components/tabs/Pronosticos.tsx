@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ROUNDS, TEAMS, tFlag, tName } from '../../data/tournament';
 import { allMatchIds, getMatch } from '../../lib/logic';
 import RoundChips from '../RoundChips';
@@ -16,12 +17,15 @@ interface Props {
   myCode: string;
   onCopyCode: () => void;
   onDownload: () => void;
+  onRestoreMyPicks: (code: string) => void;
 }
 
 export default function Pronosticos({
   me, official, round, onSetRound, isLocked, onScoreChange, onAdv, onChampion,
-  myCode, onCopyCode, onDownload,
+  myCode, onCopyCode, onDownload, onRestoreMyPicks,
 }: Props) {
+  const [restoreCode, setRestoreCode] = useState('');
+  const [showRestore, setShowRestore] = useState(false);
   const roundIds = (ROUNDS.find((r) => r.key === round) ?? ROUNDS[0]).ids;
   const myFilledCount = allMatchIds().filter((id) => {
     const p = me.picks[id];
@@ -44,6 +48,14 @@ export default function Pronosticos({
           <div style={{ fontSize: 12, color: '#6B7280', fontWeight: 600 }}>Llevas pronosticados</div>
           <div style={{ fontSize: 18, fontWeight: 800, color: '#2A6FDB' }}>{myFilledCount} partidos</div>
         </div>
+      </div>
+
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 8, background: '#F0F7F0',
+        border: '1px solid #C3E6CB', borderRadius: 12, padding: '9px 14px', marginBottom: 14, fontSize: 13, color: '#276038',
+      }}>
+        <span>💾</span>
+        <span><b>Guardado automáticamente</b> en este navegador. Si cierras y vuelves a abrir la página, tus datos seguirán aquí.</span>
       </div>
 
       <div
@@ -132,6 +144,42 @@ export default function Pronosticos({
             Descargar archivo
           </button>
         </div>
+      </div>
+      <div style={{ marginTop: 14, background: '#fff', border: '1px solid #E8EAEE', borderRadius: 18, padding: 16 }}>
+        <button
+          onClick={() => setShowRestore((v) => !v)}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, color: '#2A6FDB', padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}
+        >
+          <span>{showRestore ? '▾' : '▸'}</span> Restaurar mis pronósticos en otro dispositivo
+        </button>
+        {showRestore && (
+          <div style={{ marginTop: 12 }}>
+            <div style={{ fontSize: 13, color: '#6B7280', marginBottom: 8 }}>
+              Pega aquí tu código <code>QM26.xxx</code> (el que copiaste antes) para recuperar tus datos en este navegador o dispositivo.
+            </div>
+            <textarea
+              value={restoreCode}
+              onChange={(e) => setRestoreCode(e.target.value)}
+              placeholder="QM26.xxxxx"
+              style={{
+                width: '100%', height: 70, resize: 'vertical', border: '1.5px solid #E3E5EA',
+                borderRadius: 12, padding: '10px 12px', fontFamily: 'ui-monospace, monospace',
+                fontSize: 11, lineHeight: 1.5, outline: 'none', boxSizing: 'border-box',
+              }}
+            />
+            <button
+              onClick={() => { onRestoreMyPicks(restoreCode); setRestoreCode(''); setShowRestore(false); }}
+              disabled={!restoreCode.trim().startsWith('QM26.')}
+              style={{
+                marginTop: 9, background: '#2A6FDB', color: '#fff', border: 'none', borderRadius: 11,
+                padding: '11px 20px', fontWeight: 800, fontSize: 14, fontFamily: 'inherit',
+                cursor: restoreCode.trim().startsWith('QM26.') ? 'pointer' : 'not-allowed', opacity: restoreCode.trim().startsWith('QM26.') ? 1 : 0.5,
+              }}
+            >
+              Restaurar
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

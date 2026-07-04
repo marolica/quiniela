@@ -159,6 +159,13 @@ export function useQuiniela() {
     persistRoster(roster.filter((r) => r.name !== name));
   }, [roster, persistRoster]);
 
+  const restoreMyPicks = useCallback((code: string) => {
+    const o = dec(code.trim()) as ImportedCode | null;
+    if (!o || o.t !== 'p') { toast('Código no válido 🤔'); return; }
+    persistMe({ name: o.n || me.name, champion: o.c || '', picks: o.k || {} });
+    toast('Pronósticos restaurados ✓');
+  }, [me.name, persistMe, toast]);
+
   const standings = useCallback(() => buildStandings(roster, me, official), [roster, me, official]);
 
   return {
@@ -167,7 +174,7 @@ export function useQuiniela() {
     setScore, setAdv, toggleLock, isLocked, setChampion,
     editName, confirmName, myCode, officialCode,
     copyMyCode, downloadMyPicks, copyOfficialCode, doImport, removePlayer,
-    standings, download,
+    standings, download, restoreMyPicks,
   };
 }
 
