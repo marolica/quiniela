@@ -30,11 +30,18 @@ const R32_RAW: [number, string, string, string, string][] = [
   [88, 'AUS', 'EGY', '2026-07-03T18:00:00Z', 'Dallas'],
 ];
 
+const R16_RAW: [number, string, string, string, string][] = [
+  [89, 'CAN', 'MAR', '2026-07-04T19:00:00Z', ''],
+  [90, 'PAR', 'FRA', '2026-07-04T23:00:00Z', ''],
+  [91, 'BRA', 'NOR', '2026-07-05T22:00:00Z', ''],
+  [92, 'MEX', 'ENG', '2026-07-06T02:00:00Z', ''],
+  [93, 'POR', 'ESP', '2026-07-06T21:00:00Z', ''],
+  [94, 'USA', 'BEL', '2026-07-07T02:00:00Z', ''],
+  [95, 'ARG', 'EGY', '2026-07-07T18:00:00Z', ''],
+  [96, 'SUI', 'COL', '2026-07-07T22:00:00Z', ''],
+];
+
 const LATER_RAW: [number, number, number, string][] = [
-  [89, 74, 77, '2026-07-05T19:00:00Z'], [90, 73, 75, '2026-07-04T23:00:00Z'],
-  [91, 76, 78, '2026-07-06T19:00:00Z'], [92, 79, 80, '2026-07-06T23:00:00Z'],
-  [93, 83, 84, '2026-07-05T23:00:00Z'], [94, 81, 82, '2026-07-07T19:00:00Z'],
-  [95, 86, 88, '2026-07-07T23:00:00Z'], [96, 85, 87, '2026-07-04T19:00:00Z'],
   [97, 89, 90, '2026-07-10T23:00:00Z'], [98, 93, 94, '2026-07-11T19:00:00Z'],
   [99, 91, 92, '2026-07-10T19:00:00Z'], [100, 95, 96, '2026-07-11T23:00:00Z'],
   [101, 97, 98, '2026-07-14T23:00:00Z'], [102, 99, 100, '2026-07-15T23:00:00Z'],
@@ -42,6 +49,7 @@ const LATER_RAW: [number, number, number, string][] = [
 ];
 
 export const R32: RawR32Match[] = R32_RAW.map(([id, a, b, ko, venue]) => ({ id, a, b, ko, venue }));
+export const R16: RawR32Match[] = R16_RAW.map(([id, a, b, ko, venue]) => ({ id, a, b, ko, venue }));
 export const LATER: RawLaterMatch[] = LATER_RAW.map(([id, fromA, fromB, ko]) => ({ id, fromA, fromB, ko }));
 
 export const ROUNDS: RoundDef[] = [
@@ -54,7 +62,7 @@ export const ROUNDS: RoundDef[] = [
 
 export function buildMatches(): Record<number, MatchDef> {
   const m: Record<number, MatchDef> = {};
-  R32.forEach((r) => {
+  [...R32, ...R16].forEach((r) => {
     m[r.id] = { id: r.id, a: r.a, b: r.b, ko: r.ko, venue: r.venue, fromA: null, fromB: null };
   });
   LATER.forEach((r) => {
