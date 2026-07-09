@@ -41,11 +41,14 @@ const R16_RAW: [number, string, string, string, string][] = [
   [96, 'SUI', 'COL', '2026-07-07T20:00:00Z', 'Vancouver'],
 ];
 
+const QF_RAW: [number, string, string, string, string][] = [
+  [97,  'MAR', 'FRA', '2026-07-09T20:00:00Z', 'Foxborough'],
+  [98,  'ESP', 'BEL', '2026-07-10T19:00:00Z', 'Los Ángeles'],
+  [99,  'NOR', 'ENG', '2026-07-11T21:00:00Z', 'Miami'],
+  [100, 'ARG', 'SUI', '2026-07-12T01:00:00Z', 'Kansas City'],
+];
+
 const LATER_RAW: [number, number, number, string, string][] = [
-  [97,  89,  90,  '2026-07-09T20:00:00Z', 'Foxborough'],
-  [98,  93,  94,  '2026-07-10T19:00:00Z', 'Los Ángeles'],
-  [99,  91,  92,  '2026-07-11T21:00:00Z', 'Miami'],
-  [100, 95,  96,  '2026-07-12T00:00:00Z', 'Kansas City'],
   [101, 97,  98,  '2026-07-15T00:00:00Z', 'Dallas'],
   [102, 99,  100, '2026-07-15T23:00:00Z', 'Atlanta'],
   [104, 101, 102, '2026-07-19T19:00:00Z', 'Nueva York/NJ'],
@@ -53,6 +56,7 @@ const LATER_RAW: [number, number, number, string, string][] = [
 
 export const R32: RawR32Match[] = R32_RAW.map(([id, a, b, ko, venue]) => ({ id, a, b, ko, venue }));
 export const R16: RawR32Match[] = R16_RAW.map(([id, a, b, ko, venue]) => ({ id, a, b, ko, venue }));
+export const QF: RawR32Match[] = QF_RAW.map(([id, a, b, ko, venue]) => ({ id, a, b, ko, venue }));
 export const LATER: RawLaterMatch[] = LATER_RAW.map(([id, fromA, fromB, ko]) => ({ id, fromA, fromB, ko }));
 const LATER_VENUE: Record<number, string> = Object.fromEntries(LATER_RAW.map(([id, , , , v]) => [id, v]));
 
@@ -66,7 +70,7 @@ export const ROUNDS: RoundDef[] = [
 
 export function buildMatches(): Record<number, MatchDef> {
   const m: Record<number, MatchDef> = {};
-  [...R32, ...R16].forEach((r) => {
+  [...R32, ...R16, ...QF].forEach((r) => {
     m[r.id] = { id: r.id, a: r.a, b: r.b, ko: r.ko, venue: r.venue, fromA: null, fromB: null };
   });
   LATER.forEach((r) => {
